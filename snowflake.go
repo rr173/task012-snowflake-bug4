@@ -285,5 +285,11 @@ func (s *Service) RemoveMachine(machineID int64) error {
 		return notFound("machine %d not registered", machineID)
 	}
 	delete(s.machines, machineID)
+	for i, id := range s.order {
+		if id == machineID {
+			s.order = append(s.order[:i], s.order[i+1:]...)
+			break
+		}
+	}
 	return nil
 }
